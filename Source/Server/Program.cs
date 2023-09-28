@@ -18,19 +18,19 @@ app.MapHandlers<PubEventRecord, HubStorageProvider>(h =>
     h.RegisterEventHub<SomethingHappened>();
 });
 
-app.MapGet("/event/{name}", async (string name) =>
+app.MapGet("/event/{name}", (string name) =>
 {
-    for (int i = 1; i <= 10; i++)
+    Parallel.ForEach(Enumerable.Range(1, 10), async i =>
     {
+        await Task.Delay(Random.Shared.Next(0, 10)); //bit of jitter
         new SomethingHappened
         {
             Id = i,
             Description = name
         }
         .Broadcast();
+    });
 
-        await Task.Delay(500);
-    }
     return Results.Ok("events published!");
 });
 
