@@ -15,7 +15,7 @@ bld.Services.AddSingleton(new DbContext("EventStore", "localhost"));
 var app = bld.Build();
 app.MapHandlers<PubEventRecord, HubStorageProvider>(h =>
 {
-    h.RegisterEventHub<SomethingHappened>();
+    h.RegisterEventHub<SomethingHappened>(HubMode.RoundRobin | HubMode.EventBroker);
 });
 
 app.MapGet("/event/{name}", (string name) =>
