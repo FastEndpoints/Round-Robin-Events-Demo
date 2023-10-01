@@ -22,7 +22,6 @@ app.MapGet("/event/{name}", (string name) =>
 {
     Parallel.ForEach(Enumerable.Range(1, 10), async i =>
     {
-        await Task.Delay(Random.Shared.Next(0, 10)); //bit of jitter
         new SomethingHappened
         {
             Id = i,
